@@ -14,11 +14,13 @@ public class SpaceSoldier : MonoBehaviour
     [SerializeField] SpaceSoldier_Projectile projectile_Bullet;
 
     float laserAmountShot;
-    [SerializeField] float roundsPerSecond = 30;
+    [SerializeField] float roundsPerSecond = 30f;
+    [SerializeField] float rangeToChase = 10f;
 
     Enemies_Health healthAmount;
 
     CapsuleCollider basicCapsule;
+    Player_Movement enemyPlayer;
 
 
     private void Awake() {
@@ -27,6 +29,8 @@ public class SpaceSoldier : MonoBehaviour
         healthAmount = GetComponent<Enemies_Health>();
 
         basicCapsule = GetComponent<CapsuleCollider>();
+
+        enemyPlayer = FindObjectOfType<Player_Movement>();
     }
 
     void Update() {
@@ -37,20 +41,22 @@ public class SpaceSoldier : MonoBehaviour
 
         if (laserAmountShot > 0) laserAmountShot -= Time.deltaTime;
 
-        Player_Movement playerLocation = FindObjectOfType<Player_Movement>();
-        
+        if (Vector3.Distance(transform.position, enemyPlayer.transform.position) < rangeToChase)
+            ChasingTarget();
 
-        if (Vector3.Distance(transform.position, playerLocation.transform.position) < attackRange) {
+    }
+
+    void ChasingTarget() {
+        if (Vector3.Distance(transform.position, enemyPlayer.transform.position) < attackRange) {
             _navMeshAgent.isStopped = true;
 
-            LookAtTarget(playerLocation.transform);
+            LookAtTarget(enemyPlayer.transform);
             AttackAnimation();
             ShootingAttack();
         } else {
             _navMeshAgent.isStopped = false;
-            _navMeshAgent.SetDestination(playerLocation.transform.position);
+            _navMeshAgent.SetDestination(enemyPlayer.transform.position);
         }
-
     }
 
     void LookAtTarget(Transform target) {
@@ -62,10 +68,6 @@ public class SpaceSoldier : MonoBehaviour
 
     void AttackAnimation() {
         _animator.SetTrigger("AttackIdle");
-    }
-
-    void AttackComplete() {
-
     }
 
     void ShootingAttack() {
