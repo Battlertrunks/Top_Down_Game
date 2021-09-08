@@ -12,6 +12,8 @@ public class Player_Rifle_Bullet : MonoBehaviour {
 
     [SerializeField] Transform impactEffect;
 
+    [SerializeField] float damageAmount = 10f;
+
     Vector3 velocity = new Vector3();
 
     ParticleSystem trail;
@@ -36,9 +38,9 @@ public class Player_Rifle_Bullet : MonoBehaviour {
         trail.transform.parent = null;
         Destroy(gameObject);
 
-        SpaceSoldier health = other.GetComponent<SpaceSoldier>();
+        Enemies_Health health = other.GetComponent<Enemies_Health>();
         if (health) {
-            print("Enemy Hit.");
+            health.DamageTaken(damageAmount);
         }
     }
 }

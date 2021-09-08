@@ -16,13 +16,25 @@ public class SpaceSoldier : MonoBehaviour
     float laserAmountShot;
     [SerializeField] float roundsPerSecond = 30;
 
+    Enemies_Health healthAmount;
+
+    CapsuleCollider basicCapsule;
+
 
     private void Awake() {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
+        healthAmount = GetComponent<Enemies_Health>();
+
+        basicCapsule = GetComponent<CapsuleCollider>();
     }
 
     void Update() {
+        if (healthAmount.enemyhealth <= 0) {
+            DeathAnimation();
+            return;
+        }
+
         if (laserAmountShot > 0) laserAmountShot -= Time.deltaTime;
 
         Player_Movement playerLocation = FindObjectOfType<Player_Movement>();
@@ -38,6 +50,7 @@ public class SpaceSoldier : MonoBehaviour
             _navMeshAgent.isStopped = false;
             _navMeshAgent.SetDestination(playerLocation.transform.position);
         }
+
     }
 
     void LookAtTarget(Transform target) {
@@ -60,5 +73,11 @@ public class SpaceSoldier : MonoBehaviour
         SpaceSoldier_Projectile lasers = Instantiate(projectile_Bullet, muzzlePos.position, muzzlePos.rotation);
 
         laserAmountShot = 1 / roundsPerSecond;
+    }
+
+    void DeathAnimation() {
+        _navMeshAgent.isStopped = true;
+        _animator.SetBool("NoHealth", true);
+        basicCapsule.enabled = false;
     }
 }
