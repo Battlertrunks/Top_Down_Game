@@ -12,13 +12,24 @@ public class Player_Weapon_StateMachine : MonoBehaviour {
 
 
 
-    Transform muzzle;
+    [SerializeField] Transform muzzlePos;
+    [SerializeField] GameObject bullet;
 
-    void Start() {
+    [SerializeField] float bulletSpeed = 15f;
+
+    void Awake() {
         
     }
 
     void Update() {
-        
+        if (Input.GetButtonDown("Fire1")) {
+            ShootBullets();
+        }
+    }
+
+    void ShootBullets() {
+        GameObject bulletTransform = Instantiate(bullet, muzzlePos.position, muzzlePos.rotation);
+        Rigidbody rb = bulletTransform.GetComponent<Rigidbody>();
+        rb.AddForce(muzzlePos.forward * bulletSpeed, ForceMode.Impulse);
     }
 }

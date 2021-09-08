@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Rifle_Bullet : MonoBehaviour
-{
+public class Player_Rifle_Bullet : MonoBehaviour {
+
     Transform bullet;
     float age = 0f;
     [SerializeField] float lifeSpan = 5f;
@@ -18,7 +18,7 @@ public class Player_Rifle_Bullet : MonoBehaviour
     }
 
     void Update() {
-        transform.position += velocity * Time.deltaTime;
+        //transform.position += velocity * Time.deltaTime;
 
         age += Time.deltaTime;
         if (lifeSpan < age) {
