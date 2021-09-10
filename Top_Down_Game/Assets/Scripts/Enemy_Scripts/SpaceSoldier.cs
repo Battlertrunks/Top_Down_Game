@@ -35,6 +35,8 @@ public class SpaceSoldier : MonoBehaviour
         enemyPlayer = FindObjectOfType<Player_Movement>();
     }
 
+    // TODO: Refactor code. //
+
     void Update() {
         if (healthAmount.enemyhealth <= 0) {
             if (hasDied) {
@@ -46,8 +48,13 @@ public class SpaceSoldier : MonoBehaviour
 
         if (laserAmountShot > 0) laserAmountShot -= Time.deltaTime;
 
+        //Keeps the velocity to 0 - 1 to make the AI know when to play the forward animation.
+        float velocity = _navMeshAgent.velocity.magnitude / _navMeshAgent.speed;
+        _animator.SetFloat("MovingForward", velocity);
         if (Vector3.Distance(transform.position, enemyPlayer.transform.position) < rangeToChase)
             ChasingTarget();
+        else
+            IdleAnimation();
 
     }
 
@@ -73,6 +80,10 @@ public class SpaceSoldier : MonoBehaviour
 
     void AttackAnimation() {
         _animator.SetTrigger("AttackIdle");
+    }
+
+    void IdleAnimation() {
+        
     }
 
     void ShootingAttack() {
