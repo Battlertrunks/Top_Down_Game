@@ -22,6 +22,8 @@ public class SpaceSoldier : MonoBehaviour
     CapsuleCollider basicCapsule;
     Player_Movement enemyPlayer;
 
+    bool hasDied = true;
+
 
     private void Awake() {
         _navMeshAgent = GetComponent<NavMeshAgent>();
@@ -35,7 +37,10 @@ public class SpaceSoldier : MonoBehaviour
 
     void Update() {
         if (healthAmount.enemyhealth <= 0) {
-            DeathAnimation();
+            if (hasDied) {
+                DeathAnimation();
+                hasDied = false;
+            }
             return;
         }
 
@@ -81,5 +86,8 @@ public class SpaceSoldier : MonoBehaviour
         _navMeshAgent.isStopped = true;
         _animator.SetBool("NoHealth", true);
         basicCapsule.enabled = false;
+
+        Enemy_Spawner_1 enemyDied = FindObjectOfType<Enemy_Spawner_1>();
+        enemyDied.EnemyKilled();
     }
 }
