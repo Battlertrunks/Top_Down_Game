@@ -126,8 +126,8 @@ public class Player_Movement : MonoBehaviour
     }
 
     void UpdateAnimator() {
-        _animator.SetFloat("VelocityX", turnAmount, .1f, Time.deltaTime);
-        _animator.SetFloat("VelocityZ", forwardAmount, .1f, Time.deltaTime);
+        _animator.SetFloat("VelocityX", turnAmount, 0f, Time.deltaTime);
+        _animator.SetFloat("VelocityZ", forwardAmount, 0f, Time.deltaTime);
     }
 
     //void UpdateAnimation() {

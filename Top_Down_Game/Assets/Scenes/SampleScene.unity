@@ -8469,7 +8469,7 @@ PrefabInstance:
       objectReference: {fileID: 6262314633973208879, guid: a9297c45e29050640afe4ce4ac3122be, type: 3}
     - target: {fileID: 2932349368909013769, guid: cf75a299b41910841b58869f1ce09173, type: 3}
       propertyPath: walkingSpeed
-      value: 3.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2932349368909013770, guid: cf75a299b41910841b58869f1ce09173, type: 3}
       propertyPath: debugObj
