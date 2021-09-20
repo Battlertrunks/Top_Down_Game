@@ -138,7 +138,6 @@ public class Player_Movement : MonoBehaviour
             localMove.x /= 2;
             localMove.z /= 2;
         }
-        print(localMove);
         turnAmount = localMove.x;
 
         forwardAmount = localMove.z;
