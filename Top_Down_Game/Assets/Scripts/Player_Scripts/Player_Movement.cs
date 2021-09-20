@@ -42,13 +42,25 @@ public class Player_Movement : MonoBehaviour
                 if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d"))
                     return new States.Idle();
 
+                if (Input.GetKey("left ctrl")) {
+                    playerPawn.isSlow = true;
+                    return new States.SlowAim();
+                }
+
                 return null;
             }
         }
 
-        public class Running : State {
+        public class SlowAim : State {
             public override State Update() {
-                
+                // Behavior:
+                playerPawn.Slow_Pawn();
+
+                // Translation:
+                if (!Input.GetKey("left ctrl")) {
+                    playerPawn.isSlow = false;
+                    return new States.Walk();
+                } 
                 return null;
             }
         }
@@ -72,6 +84,7 @@ public class Player_Movement : MonoBehaviour
     float turnAmount;
 
     PlayerCursorAim lookingAt;
+    bool isSlow = false;
 
 
     // Start is called before the first frame update
@@ -120,14 +133,20 @@ public class Player_Movement : MonoBehaviour
 
     void ConvertMoveInput() {
         Vector3 localMove = transform.InverseTransformDirection(move);
+
+        if (isSlow == true) {
+            localMove.x /= 2;
+            localMove.z /= 2;
+        }
+        print(localMove);
         turnAmount = localMove.x;
 
         forwardAmount = localMove.z;
     }
 
     void UpdateAnimator() {
-        _animator.SetFloat("VelocityX", turnAmount, 0f, Time.deltaTime);
-        _animator.SetFloat("VelocityZ", forwardAmount, 0f, Time.deltaTime);
+        _animator.SetFloat("VelocityX", turnAmount, 0.1f, Time.deltaTime);
+        _animator.SetFloat("VelocityZ", forwardAmount, 0.1f, Time.deltaTime);
     }
 
     //void UpdateAnimation() {
@@ -152,9 +171,9 @@ public class Player_Movement : MonoBehaviour
         transform.Translate(moveVec, Space.World);
     }
 
-    void Running_Pawn() {
+    void Slow_Pawn() {
         MovementAction();
-        playerPawnModel.Move(moveVec * walkingSpeed * Time.deltaTime);
+        transform.Translate(moveVec / 2f, Space.World);
     }
 
     void Idle_Pawn() {
